@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FX-GOD WhatsApp Bot - Guide d'installation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #16a085;
+            border-bottom: 2px solid #16a085;
+            padding-bottom: 10px;
+        }
+        h2 {
+            margin-top: 30px;
+            border-left: 4px solid #16a085;
+            padding-left: 10px;
+        }
+        code, pre {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            padding: 2px 5px;
+            font-size: 0.9em;
+        }
+        pre {
+            padding: 15px;
+            overflow-x: auto;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .feature-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .feature-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #16a085;
+            font-weight: bold;
+        }
+        .steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .steps li {
+            margin-bottom: 20px;
+            padding-left: 50px;
+            position: relative;
+        }
+        .steps li:before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #16a085;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #16a085;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .note {
+            background-color: #e7f4fd;
+            border-left: 4px solid #2980b9;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .warning {
+            background-color: #fff5e6;
+            border-left: 4px solid #e67e22;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FX-GOD WhatsApp Bot</h1>
+        
+        <p>Ce guide vous aidera à installer et à configurer le bot WhatsApp FX-GOD sur votre téléphone à l'aide de Termux.</p>
+        
+        <h2>Présentation</h2>
+        <p>FX-GOD est un bot WhatsApp personnalisable basé sur la bibliothèque Baileys. Il offre plus de 20 plugins incluant la gestion de groupe, la manipulation de médias et une gestion de session personnalisée.</p>
+        
+        <h2>Fonctionnalités</h2>
+        <ul class="feature-list">
+            <li><strong>Connexion WhatsApp</strong> : Par code QR ou code d'appairage</li>
+            <li><strong>Préfixe personnalisable</strong> : Changez le préfixe de commande (par défaut : ".")</li>
+            <li><strong>Gestion de groupe</strong> : Tagall, antilink, etc.</li>
+            <li><strong>Manipulation de médias</strong> : Création de stickers, téléchargement de médias</li>
+            <li><strong>Options de statut</strong> : Ghost mode, always online, autoread status</li>
+            <li><strong>Sécurité</strong> : Système de blacklist et commandes réservées au propriétaire</li>
+        </ul>
+        
+        <h2>Installation sur Termux</h2>
+        
+        <h3>Prérequis</h3>
+        <ul>
+            <li>Termux installé sur votre Android</li>
+            <li>Accès au stockage autorisé</li>
+        </ul>
+        
+        <ol class="steps">
+            <li>
+                <h3>Installation des dépendances</h3>
+                <pre><code># Mettre à jour les packages
+pkg update && pkg upgrade -y
+
+# Installer les dépendances nécessaires
+pkg install -y nodejs-lts git ffmpeg imagemagick</code></pre>
+            </li>
+            
+            <li>
+                <h3>Accès au stockage et navigation</h3>
+                <pre><code># Autoriser l'accès au stockage (nécessaire une seule fois)
+termux-setup-storage
+
+# Naviguer vers votre dossier (remplacer par votre chemin)
+cd /storage/emulated/0/jj/</code></pre>
+            </li>
+            
+            <li>
+                <h3>Créer les dossiers nécessaires</h3>
+                <pre><code># Créer les dossiers essentiels s'ils n'existent pas
+mkdir -p fx-god-bot/sessions fx-god-bot/temp fx-god-bot/media fx-god-bot/data
+cd fx-god-bot</code></pre>
+            </li>
+            
+            <li>
+                <h3>Installation des packages</h3>
+                <div class="note">
+                    <strong>Note :</strong> Si vous avez déjà les fichiers du code, vous devez simplement vous assurer que les dossiers sessions et temp sont créés.
+                </div>
+                <pre><code># Installation des dépendances npm
+npm install --legacy-peer-deps</code></pre>
+            </li>
+            
+            <li>
+                <h3>Configuration de l'environnement</h3>
+                <pre><code># Créer et configurer votre fichier .env
+cp .env.example .env</code></pre>
+                <p>Modifiez le fichier .env avec un éditeur de texte pour définir :</p>
+                <ul>
+                    <li>Votre numéro WhatsApp (OWNER_NUMBER)</li>
+                    <li>Votre nom (OWNER_NAME)</li>
+                    <li>Le préfixe de commande (BOT_PREFIX)</li>
+                    <li>Méthode de connexion (USE_PAIRING_CODE)</li>
+                </ul>
+            </li>
+            
+            <li>
+                <h3>Démarrage du bot</h3>
+                <pre><code># Démarrer le bot
+node index.js</code></pre>
+            </li>
+        </ol>
+        
+        <h2>Connexion à WhatsApp</h2>
+        <p>Le bot propose deux méthodes de connexion :</p>
+        <ol>
+            <li><strong>Scanner un code QR</strong> avec l'application WhatsApp</li>
+            <li><strong>Utiliser un code d'appairage</strong> à entrer sur votre téléphone</li>
+        </ol>
+        
+        <h2>Commandes principales</h2>
+        <table>
+            <tr>
+                <th>Commande</th>
+                <th>Description</th>
+                <th>Usage</th>
+            </tr>
+            <tr>
+                <td><code>.menu</code></td>
+                <td>Affiche la liste des commandes</td>
+                <td><code>.menu</code></td>
+            </tr>
+            <tr>
+                <td><code>.help [cmd]</code></td>
+                <td>Affiche l'aide pour une commande</td>
+                <td><code>.help sticker</code></td>
+            </tr>
+            <tr>
+                <td><code>.setprefix [prefix]</code></td>
+                <td>Change le préfixe des commandes</td>
+                <td><code>.setprefix !</code></td>
+            </tr>
+            <tr>
+                <td><code>.tagall [message]</code></td>
+                <td>Mentionne tous les membres du groupe</td>
+                <td><code>.tagall Hello</code></td>
+            </tr>
+            <tr>
+                <td><code>.sticker</code></td>
+                <td>Crée un sticker à partir d'une image</td>
+                <td>Envoyez une image avec la légende <code>.sticker</code></td>
+            </tr>
+            <tr>
+                <td><code>.vv</code></td>
+                <td>Affiche un message "view once"</td>
+                <td>Répondez à un message view once avec <code>.vv</code></td>
+            </tr>
+            <tr>
+                <td><code>.ghost</code></td>
+                <td>Active/désactive le mode invisible</td>
+                <td><code>.ghost</code></td>
+            </tr>
+            <tr>
+                <td><code>.alwaysonline</code></td>
+                <td>Reste toujours en ligne</td>
+                <td><code>.alwaysonline</code></td>
+            </tr>
+        </table>
+        
+        <h2>Exécution en arrière-plan sur Termux</h2>
+        <p>Pour garder le bot en fonctionnement même après avoir fermé Termux :</p>
+        <pre><code># Installer termux-services
+pkg install termux-services
+
+# Démarrer le bot en arrière-plan
+node index.js &</code></pre>
+        
+        <h2>Dépannage</h2>
+        
+        <h3>Problèmes de connexion</h3>
+        <ul>
+            <li><strong>Erreur QR Code</strong> : Vérifiez que WhatsApp est à jour sur votre téléphone</li>
+            <li><strong>Erreur de session</strong> : Supprimez le dossier sessions et reconnectez-vous</li>
+        </ul>
+        
+        <h3>Erreurs d'installation</h3>
+        <ul>
+            <li><strong>Erreurs npm</strong> : Utilisez l'option <code>--legacy-peer-deps</code></li>
+            <li><strong>Erreurs ffmpeg</strong> : Assurez-vous que ffmpeg est correctement installé</li>
+        </ul>
+        
+        <div class="warning">
+            <strong>Attention :</strong> Si vous possédez déjà tous les fichiers du code source et avez seulement besoin des dossiers sessions et temp, utilisez simplement cette commande :
+            <pre><code>mkdir -p sessions temp</code></pre>
+        </div>
+        
+        <h2>Crédits</h2>
+        <p><strong>Auteur</strong> : hhhisoka</p>
+        <p><strong>Bot</strong> : FX-GOD WhatsApp Bot</p>
+        
+        <div class="footer">
+            <p>© 2025 FX-GOD WhatsApp Bot</p>
+        </div>
+    </div>
+</body>
+</html>

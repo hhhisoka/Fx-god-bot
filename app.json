@@ -1,0 +1,77 @@
+{
+  "name": "FX-GOD WhatsApp Bot",
+  "description": "Un bot WhatsApp personnalisable basé sur Baileys avec multiples plugins",
+  "repository": "https://github.com/hhhisoka/fx-god-whatsapp-bot",
+  "logo": "https://raw.githubusercontent.com/hhhisoka/fx-god-whatsapp-bot/main/media/logo.png",
+  "keywords": ["whatsapp", "bot", "baileys", "node"],
+  "env": {
+    "BOT_PREFIX": {
+      "description": "Préfixe des commandes (par exemple: ., !, #)",
+      "value": ".",
+      "required": false
+    },
+    "OWNER_NUMBER": {
+      "description": "Votre numéro WhatsApp au format international (sans +)",
+      "value": "",
+      "required": true
+    },
+    "OWNER_NAME": {
+      "description": "Votre nom ou pseudo",
+      "value": "",
+      "required": true
+    },
+    "SESSION_ID": {
+      "description": "Identifiant unique pour votre session WhatsApp",
+      "value": "fx-god",
+      "required": false
+    },
+    "GHOST_MODE": {
+      "description": "Mode 'invisible' (true/false)",
+      "value": "false",
+      "required": false
+    },
+    "ALWAYS_ONLINE": {
+      "description": "Toujours apparaître en ligne (true/false)",
+      "value": "true",
+      "required": false
+    },
+    "AUTO_READ_STATUS": {
+      "description": "Lire automatiquement les statuts (true/false)",
+      "value": "true",
+      "required": false
+    },
+    "ANTI_LINK": {
+      "description": "Bloquer les liens dans les groupes (true/false)",
+      "value": "true",
+      "required": false
+    },
+    "REMOVE_ON_ANTI_LINK": {
+      "description": "Retirer les membres qui envoient des liens (true/false)",
+      "value": "false",
+      "required": false
+    },
+    "ANTI_VIEW_ONCE": {
+      "description": "Convertir auto. les messages 'vue unique' (true/false)",
+      "value": "true",
+      "required": false
+    },
+    "AUTO_JOIN_GROUP": {
+      "description": "Lien de groupe WhatsApp à rejoindre au démarrage",
+      "value": "",
+      "required": false
+    },
+    "OWNER_JOIN_GROUP": {
+      "description": "Lien du groupe WhatsApp où ajouter le propriétaire après déploiement",
+      "value": "",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+    }
+  ]
+}
