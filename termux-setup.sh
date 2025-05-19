@@ -21,8 +21,8 @@ echo "[*] Version Node.js installée: $node_version"
 
 # Clonage du dépôt (à remplacer par l'URL de votre dépôt)
 echo "[*] Clonage du dépôt..."
-git clone https://github.com/hhhisoka/
-cd fx-god-whatsapp-bot
+git clone https://github.com/hhhisoka/Fx-god-bot
+cd Fx-god-whatsapp-bot
 
 # Installation des packages npm
 echo "[*] Installation des packages npm..."
