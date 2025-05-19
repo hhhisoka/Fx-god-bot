@@ -3,11 +3,11 @@
  * A customizable WhatsApp bot based on Baileys with multiple plugins
  */
 
-const { startBot } = require('./lib/baileys');
-const { loadPlugins } = require('./lib/pluginLoader');
-const config = require('./config');
-const fs = require('fs-extra');
-const qrcode = require('qrcode-terminal');
+import { startBot } from './lib/baileys.js';
+import { loadPlugins } from './lib/pluginLoader.js';
+import config from './config.js';
+import fs from 'fs-extra';
+import qrcode from 'qrcode-terminal';
 
 // Create necessary directories if they don't exist
 const initDirectories = async () => {
