@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion FX-BOT</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background: #1f1f1f;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 255, 170, 0.3);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+    }
+    .code {
+      font-size: 2rem;
+      margin-top: 20px;
+      background: #111;
+      padding: 15px;
+      border-radius: 10px;
+      word-break: break-word;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Connexion à FX-BOT</h1>
+    <p class="subtitle">Colle ce code dans WhatsApp pour connecter ton bot</p>
+    <div id="code" class="code">Chargement du code...</div>
+  </div>
+
+  <script>
+    async function fetchCode() {
+      try {
+        const res = await fetch('/pairing.txt');
+        const code = await res.text();
+        document.getElementById("code").innerText = code || "En attente du code...";
+      } catch (err) {
+        document.getElementById("code").innerText = "Erreur de récupération du code.";
+      }
+    }
+
+    fetchCode();
+    setInterval(fetchCode, 3000);
+  </script>
+</body>
+</html>

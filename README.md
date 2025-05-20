@@ -36,6 +36,18 @@ cp .env.example .env
 # Démarrer le bot
 npm start
 ```
+### Interface Web 
+
+Accédez à l'interface web de pairage pour une expérience simplifiée :
+
+👉 [**Accéder à la page de pairage**](https://fx-god-bot.replit.app/pair)
+
+L'interface web vous permet de :
+- Scanner un code QR
+- Utiliser un code de pairage numérique
+- Gérer vos sessions existantes
+- Obtenir facilement votre ID de session
+
 
 ### Installation sur Termux
 

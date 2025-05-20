@@ -1,0 +1,414 @@
+<!-- web/public/index.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FX-GOD Bot - Pairage</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #2563eb, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        .btn-secondary {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+        }
+        .btn-secondary:hover {
+            background-color: #30363d;
+        }
+        .btn-danger {
+            background-color: #f85149;
+            color: white;
+        }
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+        #qrcode img {
+            margin: 0 auto;
+            border: 10px solid white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <header class="bg-gray-900 border-b border-gray-800 py-4">
+            <div class="container mx-auto px-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-robot text-blue-500 text-2xl mr-3"></i>
+                    <h1 class="text-xl font-bold gradient-text">FX-GOD WhatsApp Bot</h1>
+                </div>
+                <div>
+                    <a href="https://github.com/hhhisoka/Fx-god-bot" target="_blank" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Section de pairage -->
+                <div class="lg:col-span-2">
+                    <div class="card p-6 mb-6">
+                        <h2 class="text-2xl font-bold mb-4 gradient-text">Pairer le Bot WhatsApp</h2>
+                        <div class="mb-6">
+                            <div class="flex space-x-4 mb-6">
+                                <button id="qrModeBtn" class="btn-primary px-4 py-2 rounded-md flex-1">
+                                    <i class="fas fa-qrcode mr-2"></i> Code QR
+                                </button>
+                                <button id="pairingModeBtn" class="btn-secondary px-4 py-2 rounded-md flex-1">
+                                    <i class="fas fa-mobile-alt mr-2"></i> Code d'appairage
+                                </button>
+                            </div>
+
+                            <!-- Mode QR -->
+                            <div id="qrMode" class="mb-6">
+                                <div class="text-center mb-4">
+                                    <p class="mb-2">Scannez ce QR code avec WhatsApp sur votre téléphone</p>
+                                    <small class="text-gray-400">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Ouvrez WhatsApp > Menu > Appareils liés > Lier un appareil
+                                    </small>
+                                </div>
+                                <div id="qrcode" class="flex justify-center mb-4">
+                                    <div class="w-64 h-64 bg-gray-800 flex items-center justify-center text-gray-500">
+                                        En attente du QR code...
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button id="refreshQrBtn" class="btn-secondary px-4 py-2 rounded-md">
+                                        <i class="fas fa-sync-alt mr-2"></i> Actualiser le QR
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Mode Code d'appairage -->
+                            <div id="pairingMode" class="hidden">
+                                <div class="mb-4">
+                                    <label for="phoneNumber" class="block mb-2">Numéro de téléphone (format international sans +)</label>
+                                    <div class="flex">
+                                        <input type="text" id="phoneNumber" placeholder="Exemple: 2250101676111" 
+                                            class="bg-gray-800 border border-gray-700 rounded-l-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <button id="getPairingCodeBtn" class="btn-primary px-4 py-2 rounded-r-md">
+                                            Obtenir le code
+                                        </button>
+                                    </div>
+                                    <small class="text-gray-400 mt-1 block">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Entrez le numéro WhatsApp que vous souhaitez connecter
+                                    </small>
+                                </div>
+                                <div id="pairingCodeContainer" class="hidden">
+                                    <div class="bg-gray-800 p-4 rounded-md mb-4">
+                                        <h3 class="text-center font-bold text-xl mb-2">Votre code d'appairage</h3>
+                                        <div id="pairingCode" class="text-center text-3xl font-mono tracking-widest gradient-text">
+                                            --------
+                                        </div>
+                                    </div>
+                                    <div class="text-center mb-4">
+                                        <p class="mb-1">Entrez ce code sur votre téléphone</p>
+                                        <small class="text-gray-400">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            Ouvrez WhatsApp > Menu > Appareils liés > Lier un appareil > Entrer code d'association
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="connectionStatus" class="hidden">
+                            <div class="bg-blue-900 bg-opacity-30 border border-blue-800 rounded-md p-4 mb-4">
+                                <h3 class="font-bold mb-2">
+                                    <i class="fas fa-info-circle mr-2"></i>Statut de la connexion
+                                </h3>
+                                <p id="statusMessage">Tentative de connexion...</p>
+                            </div>
+                        </div>
+
+                        <div id="sessionInfo" class="hidden">
+                            <div class="bg-green-900 bg-opacity-30 border border-green-800 rounded-md p-4 mb-4">
+                                <h3 class="font-bold mb-2 flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Connecté avec succès!
+                                </h3>
+                                <p class="mb-2">ID de session: <span id="sessionId" class="font-mono bg-gray-800 px-2 py-1 rounded">fx-god-xxxxx</span></p>
+                                <div class="mt-4">
+                                    <div class="bg-gray-800 p-3 rounded-md font-mono text-sm">
+                                        <pre>SESSION_ID=<span id="sessionIdEnv">fx-god-xxxxx</span></pre>
+                                    </div>
+                                    <p class="text-xs mt-2">
+                                        Ajoutez cette ligne à votre fichier .env pour réutiliser cette session.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section des sessions existantes -->
+                <div>
+                    <div class="card p-6">
+                        <h2 class="text-xl font-bold mb-4">Sessions Existantes</h2>
+                        <div id="sessionsLoading" class="text-center py-4">
+                            <i class="fas fa-spinner fa-spin mr-2"></i> Chargement...
+                        </div>
+                        <div id="sessionsContainer" class="hidden">
+                            <div id="sessionsEmpty" class="text-center py-4 text-gray-500 hidden">
+                                <i class="fas fa-inbox text-2xl mb-2"></i>
+                                <p>Aucune session trouvée</p>
+                            </div>
+                            <div id="sessionsList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-gray-900 border-t border-gray-800 py-4 mt-8">
+            <div class="container mx-auto px-4 text-center text-gray-500">
+                <p>FX-GOD WhatsApp Bot &copy; 2023</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script>
+        // Connexion Socket.IO
+        const socket = io();
+        
+        // Éléments DOM
+        const qrModeBtn = document.getElementById('qrModeBtn');
+        const pairingModeBtn = document.getElementById('pairingModeBtn');
+        const qrMode = document.getElementById('qrMode');
+        const pairingMode = document.getElementById('pairingMode');
+        const qrCodeDiv = document.getElementById('qrcode');
+        const refreshQrBtn = document.getElementById('refreshQrBtn');
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const getPairingCodeBtn = document.getElementById('getPairingCodeBtn');
+        const pairingCodeContainer = document.getElementById('pairingCodeContainer');
+        const pairingCodeDisplay = document.getElementById('pairingCode');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const statusMessage = document.getElementById('statusMessage');
+        const sessionInfo = document.getElementById('sessionInfo');
+        const sessionIdSpan = document.getElementById('sessionId');
+        const sessionIdEnvSpan = document.getElementById('sessionIdEnv');
+        const sessionsLoading = document.getElementById('sessionsLoading');
+        const sessionsContainer = document.getElementById('sessionsContainer');
+        const sessionsEmpty = document.getElementById('sessionsEmpty');
+        const sessionsList = document.getElementById('sessionsList');
+        
+        // Mode QR ou pairage
+        qrModeBtn.addEventListener('click', () => {
+            qrModeBtn.classList.remove('btn-secondary');
+            qrModeBtn.classList.add('btn-primary');
+            pairingModeBtn.classList.remove('btn-primary');
+            pairingModeBtn.classList.add('btn-secondary');
+            qrMode.classList.remove('hidden');
+            pairingMode.classList.add('hidden');
+            socket.emit('connectionMode', 'qr');
+            refreshQR();
+        });
+        
+        pairingModeBtn.addEventListener('click', () => {
+            pairingModeBtn.classList.remove('btn-secondary');
+            pairingModeBtn.classList.add('btn-primary');
+            qrModeBtn.classList.remove('btn-primary');
+            qrModeBtn.classList.add('btn-secondary');
+            pairingMode.classList.remove('hidden');
+            qrMode.classList.add('hidden');
+            socket.emit('connectionMode', 'pairing');
+        });
+        
+        // Rafraîchir le QR
+        refreshQrBtn.addEventListener('click', refreshQR);
+        
+        function refreshQR() {
+            qrCodeDiv.innerHTML = `
+                <div class="w-64 h-64 bg-gray-800 flex items-center justify-center text-gray-500">
+                    <i class="fas fa-spinner fa-spin mr-2"></i> Génération du QR...
+                </div>
+            `;
+            socket.emit('requestQR');
+        }
+        
+        // Obtenir le code de pairage
+        getPairingCodeBtn.addEventListener('click', () => {
+            const phoneNumber = phoneNumberInput.value.trim();
+            if (!phoneNumber) {
+                alert('Veuillez entrer un numéro de téléphone valide.');
+                return;
+            }
+            
+            getPairingCodeBtn.disabled = true;
+            getPairingCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Génération...';
+            
+            socket.emit('phoneNumber', phoneNumber);
+            
+            // Afficher le statut de connexion
+            connectionStatus.classList.remove('hidden');
+            statusMessage.textContent = 'Génération du code d\'appairage...';
+        });
+        
+        // Réception du QR code
+        socket.on('qr', (qr) => {
+            QRCode.toCanvas(document.createElement('canvas'), qr, { width: 256 }, (error, canvas) => {
+                if (error) {
+                    console.error(error);
+                    qrCodeDiv.innerHTML = 'Erreur de génération du QR code';
+                    return;
+                }
+                
+                qrCodeDiv.innerHTML = '';
+                qrCodeDiv.appendChild(canvas);
+                
+                // Afficher le statut de connexion
+                connectionStatus.classList.remove('hidden');
+                statusMessage.textContent = 'QR code généré. En attente de scan...';
+            });
+        });
+        
+        // Réception du code de pairage
+        socket.on('pairingCode', (code) => {
+            getPairingCodeBtn.disabled = false;
+            getPairingCodeBtn.innerHTML = 'Obtenir le code';
+            
+            pairingCodeContainer.classList.remove('hidden');
+            pairingCodeDisplay.textContent = code;
+            
+            // Mettre à jour le statut
+            statusMessage.textContent = 'Code d\'appairage généré. En attente d\'entrée du code...';
+        });
+        
+        // Mise à jour du statut de connexion
+        socket.on('connectionStatus', (status) => {
+            connectionStatus.classList.remove('hidden');
+            statusMessage.textContent = status;
+        });
+        
+        // Connexion réussie
+        socket.on('connected', (data) => {
+            connectionStatus.classList.add('hidden');
+            sessionInfo.classList.remove('hidden');
+            sessionIdSpan.textContent = data.sessionId;
+            sessionIdEnvSpan.textContent = data.sessionId;
+            
+            // Recharger la liste des sessions
+            loadSessions();
+        });
+        
+        // Charger les sessions
+        function loadSessions() {
+            sessionsLoading.classList.remove('hidden');
+            sessionsContainer.classList.add('hidden');
+            
+            fetch('/api/sessions')
+                .then(response => response.json())
+                .then(sessions => {
+                    sessionsLoading.classList.add('hidden');
+                    sessionsContainer.classList.remove('hidden');
+                    
+                    if (sessions.length === 0) {
+                        sessionsEmpty.classList.remove('hidden');
+                        sessionsList.classList.add('hidden');
+                        return;
+                    }
+                    
+                    sessionsEmpty.classList.add('hidden');
+                    sessionsList.classList.remove('hidden');
+                    
+                    sessionsList.innerHTML = '';
+                    sessions.forEach(session => {
+                        const date = new Date(session.createdAt).toLocaleString();
+                        const html = `
+                            <div class="border-b border-gray-800 py-3 last:border-b-0">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h3 class="font-mono">${session.id}</h3>
+                                        <p class="text-xs text-gray-400">Créée le: ${date}</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="mr-3">
+                                            <span class="flex items-center ${session.active ? 'text-green-500' : 'text-gray-500'}">
+                                                <i class="fas fa-circle text-xs mr-1"></i>
+                                                ${session.active ? 'Active' : 'Inactive'}
+                                            </span>
+                                        </div>
+                                        <button class="delete-session-btn btn-danger p-1 rounded" data-id="${session.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        sessionsList.innerHTML += html;
+                    });
+                    
+                    // Ajouter les écouteurs d'événements pour les boutons de suppression
+                    document.querySelectorAll('.delete-session-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const sessionId = this.getAttribute('data-id');
+                            deleteSession(sessionId);
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Erreur lors du chargement des sessions:', error);
+                    sessionsLoading.classList.add('hidden');
+                    sessionsContainer.classList.remove('hidden');
+                    sessionsList.innerHTML = '<div class="text-red-500 py-3">Erreur lors du chargement des sessions</div>';
+                });
+        }
+        
+        // Supprimer une session
+        function deleteSession(sessionId) {
+            if (!confirm(`Êtes-vous sûr de vouloir supprimer la session ${sessionId} ?`)) {
+                return;
+            }
+            
+            fetch(`/api/sessions/${sessionId}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadSessions();
+                    } else {
+                        alert('Erreur lors de la suppression de la session');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la suppression de la session:', error);
+                    alert('Erreur lors de la suppression de la session');
+                });
+        }
+        
+        // Charger les sessions au chargement de la page
+        document.addEventListener('DOMContentLoaded', loadSessions);
+    </script>
+</body>
+</html>
